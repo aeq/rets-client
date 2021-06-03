@@ -4,7 +4,7 @@ const LINE_SPLIT = '\n'
 const KEY_SPLIT = /=(.*)$/
 
 export const loginHandler = async (response: any): Promise<any> => {
-  console.log('login response', response.data)
+  // console.log('login response', response.data)
   const { [RetsKeys.Response]: retsResponse } = response?.data[RetsKeys.Rets]
 
   // if (response.headers['set-cookie']) {

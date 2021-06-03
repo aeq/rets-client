@@ -2,13 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import request from 'request'
 import axiosCookieJarSupport from 'axios-cookiejar-support'
 import { Store, CookieJar } from 'tough-cookie'
-import {
-  IRetsAction,
-  IRetsResponse,
-  IRetsClientOptions,
-  IRetsRequestConfig,
-  RetsRequestMethod,
-} from 'types'
+import { IRetsResponse, IRetsClientOptions, IRetsRequestConfig, RetsRequestMethod } from 'types'
 import { parseRetsResponse } from './parseRetsResponse'
 
 axiosCookieJarSupport(axios)
@@ -59,26 +53,26 @@ const simpleStringify = (object: Record<string, any>) => {
   // return JSON.stringify(simpleObject); // returns cleaned up JSON
 }
 
-axios.interceptors.request.use((axiosRequest) => {
-  console.log('interceptors.Request', JSON.stringify(axiosRequest, null, 2))
-  return axiosRequest
-})
+// axios.interceptors.request.use((axiosRequest) => {
+//   console.log('interceptors.Request', JSON.stringify(axiosRequest, null, 2))
+//   return axiosRequest
+// })
 
-axios.interceptors.response.use(
-  (response) => {
-    console.log('interceptors.Response:', simpleStringify(response), response.data)
-    return response
-  },
-  // (error) => console.log('interceptors.ResponseError', JSON.stringify(error, null, 2)),
-  (error) => {
-    throw new Error(error.message)
-  },
-)
+// axios.interceptors.response.use(
+//   (response) => {
+//     console.log('interceptors.Response:', simpleStringify(response), response.data)
+//     return response
+//   },
+//   // (error) => console.log('interceptors.ResponseError', JSON.stringify(error, null, 2)),
+//   (error) => {
+//     throw new Error(error.message)
+//   },
+// )
 
 export const executeCall = async (config: IRetsRequestConfig, payload?: any): Promise<any> => {
-  const { method, url, params, auth } = config
+  const { method, url, auth } = config
 
-  console.log('------------------------------------', url)
+  // console.log('------------------------------------', url)
 
   return axios({
     jar: cookieJar,

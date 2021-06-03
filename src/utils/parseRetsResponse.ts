@@ -17,7 +17,7 @@ const parseOptions = {
 }
 
 export const parseRetsResponse = (data: any, headers?: any) => {
-  // console.log('parseRetsResponse.headers', headers)
+  // console.log('parseRetsResponse')
 
   const parsed = parser.parse(data, parseOptions)
   // console.log('parsed', parsed)

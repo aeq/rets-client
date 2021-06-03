@@ -1,16 +1,17 @@
-import { IRetsMetadataOptions } from 'types'
 import dotenv from 'dotenv'
-import { RetsClient, RetsFormat, DdfCulture, RetsMetadataType } from '.'
+import { RetsMetadataType } from 'types'
+import { DdfCulture, getClient, IRetsMetadataOptions } from '.'
 // const { RetsClient, RetsVersion, RetsFormat, DdfCulture, RetsRequestMethod } = require('./src')
 
 dotenv.config()
 
-const client = new RetsClient({
+const config = {
   url: process.env.RETS_TEST_URL || '',
   username: process.env.RETS_TEST_USERNAME || '',
   password: process.env.RETS_TEST_PASSWORD || '',
-})
+}
 
+/// /// TREB Specifics //////
 enum TREBClass {
   CondoProperty = 'CondoProperty',
   DeletedProperty = 'DeletedProperty',
@@ -26,61 +27,55 @@ enum TREBObjects {
   Photo = 'Photo',
 }
 
+/// //// Testers /////
+
 const testLogin = async () => {
-  console.log('> testLogin')
-  await client.login()
-  console.log('>> Login:: success')
-  await client.logout()
-  console.log('>> Logout:: success')
+  console.log('>> testLogin')
+  await getClient(config, async () => {
+    console.log('Logged In!')
+  })
 }
 
 const testSearch = async () => {
-  await client.login()
-  const listing = await client.search({
-    // query: '(Status=A)',
-    query: '(timestamp_sql=2021-04-01T00:00:00+)',
-    limit: 2,
-    searchType: TREBResources.Property,
-    className: TREBClass.ResidentialProperty,
-    culture: DdfCulture.EN_CA,
+  console.log('>> testSearch')
+  await getClient(config, async ({ search }) => {
+    const listing = await search({
+      // query: '(Status=A)',
+      query: '(timestamp_sql=2021-04-01T00:00:00+)',
+      limit: 2,
+      searchType: TREBResources.Property,
+      className: TREBClass.ResidentialProperty,
+      culture: DdfCulture.EN_CA,
+    })
+    console.log('listing', listing)
   })
-  console.log('listing', listing)
-  await client.logout()
 }
 
 const testMetadata = async () => {
-  await client.login()
-  console.log('>>Login success!')
-  const metadata = await client.getMetadata({
-    type: RetsMetadataType.Resource,
-  })
-  console.log('>> Metadata success!', metadata)
-  const metadata2 = await client.getMetadata({
-    type: RetsMetadataType.Class,
-    // classType: 'CommercialProperty',
-  })
-  console.log('>> Metadata2 success!', metadata2)
+  console.log('>> testMetada')
+  await getClient(config, async ({ getMetadata }) => {
+    const resources = await getMetadata({
+      type: RetsMetadataType.Resource,
+    })
+    console.log('getMetadata.Resource', resources)
 
-  // // gets fields for a class type
-  // const metadata3 = await client.getMetadata({
-  //   type: RetsMetadataType.Table,
-  //   classType: TREBClass.ResidentialProperty,
-  // })
-  // console.log('>> Metadata3 success!', metadata3)
+    const classes = await getMetadata({
+      type: RetsMetadataType.Class,
+    })
+    console.log('getMetadata.Class', classes)
 
-  // const metadata4 = await client.getMetadata({
-  //   type: RetsMetadataType.Objects,
-  //   // classType: 'CommercialProperty',
-  // })
-  // console.log('>> Metadata4 success!', metadata4)
-  // await client.logout()
+    // const tables = await getMetadata({
+    //   type: RetsMetadataType.Table,
+    //   classType: TREBClass.ResidentialProperty,
+    // })
+    // console.log('getMetadata.Class', tables)
+
+    const objects = await getMetadata({
+      type: RetsMetadataType.Objects,
+    })
+    console.log('getMetadata.Class', objects)
+  })
 }
-
-// const testAutologout = async () => {
-//   getAutologoutClient(config, (client) => {
-//     await client.serach({})
-//   })
-// }
 
 // const testObject = async () => {
 //   await client.login()
@@ -96,7 +91,7 @@ const testMetadata = async () => {
 
 const main = async () => {
   console.log('Start!')
-  await testSearch()
+  await testMetadata()
 
   console.log('Finish!')
 }
