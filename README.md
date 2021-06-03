@@ -1,8 +1,6 @@
-# NodeJS Typescript RETS Client
+# Typescript RETS Client
 
 A RETS (Real Estate Transaction Standard) Client written in Typescript.
-
-Inspired by <https://github.com/WinUP/rets-client> and <https://github.com/zacronos/rets-client>
 
 # Install
 
@@ -60,3 +58,12 @@ RETS_TEST_URL=http://www...
 RETS_TEST_USERNAME=...
 RETS_TEST_PASSWORD=...
 ```
+
+and then run the test file by running: ```yarn start```
+
+# Acknowledgements
+
+Inspired by:
+
+* <https://github.com/WinUP/rets-client>
+* <https://github.com/zacronos/rets-client>
