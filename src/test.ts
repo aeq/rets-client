@@ -77,9 +77,9 @@ const testMetadata = async () => {
 }
 
 // const testAutologout = async () => {
-//   // RetsClient.getAutologoutClient(config, (client) => {
-
-//   // })
+//   getAutologoutClient(config, (client) => {
+//     await client.serach({})
+//   })
 // }
 
 // const testObject = async () => {
