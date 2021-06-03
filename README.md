@@ -20,7 +20,7 @@ const config = {
   password: 'my-rets-password',
 }
 
-await getClient(config, async ({ search }) => {
+await getClient(config, async ({ search, getMetadata }) => {
 
   // Figure out the data structure
   const resources = await getMetadata({
