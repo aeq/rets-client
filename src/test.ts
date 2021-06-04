@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import { promises as fs } from 'fs'
 import { RetsMetadataType } from 'types'
 import { DdfCulture, getClient, IRetsMetadataOptions } from '.'
 // const { RetsClient, RetsVersion, RetsFormat, DdfCulture, RetsRequestMethod } = require('./src')
@@ -54,26 +55,66 @@ const testSearch = async () => {
 const testMetadata = async () => {
   console.log('>> testMetada')
   await getClient(config, async ({ getMetadata }) => {
-    const resources = await getMetadata({
-      type: RetsMetadataType.Resource,
-    })
-    console.log('getMetadata.Resource', resources)
-
-    const classes = await getMetadata({
-      type: RetsMetadataType.Class,
-    })
-    console.log('getMetadata.Class', classes)
-
-    // const tables = await getMetadata({
-    //   type: RetsMetadataType.Table,
-    //   classType: TREBClass.ResidentialProperty,
+    // const resources = await getMetadata({
+    //   type: RetsMetadataType.Resource,
     // })
-    // console.log('getMetadata.Class', tables)
+    // console.log('getMetadata.Resource', resources)
 
-    const objects = await getMetadata({
-      type: RetsMetadataType.Objects,
+    // const classes = await getMetadata({
+    //   type: RetsMetadataType.Class,
+    // })
+    // console.log('getMetadata.Class', classes)
+
+    const tables = await getMetadata({
+      type: RetsMetadataType.Table,
+      classType: 'CommercialProperty',
+      id: 'Property',
     })
-    console.log('getMetadata.Class', objects)
+    console.log('getMetadata.Table', tables)
+
+    // const objects = await getMetadata({
+    //   type: RetsMetadataType.Objects,
+    // })
+    // console.log('getMetadata.Class', objects)
+  })
+}
+
+const testDataMap = async () => {
+  console.log('>> testDataMap')
+  await getClient(config, async ({ getDataMap }) => {
+    const dataMap = await getDataMap()
+    console.log('getDataMap', dataMap)
+    // const condoKeys: Array<string> = dataMap?.Property?.CondoProperty
+    // const residentialKeys: Array<string> = dataMap?.Property?.ResidentialProperty
+    // const commercialKeys: Array<string> = dataMap?.Property?.CommercialProperty
+    // const inCondoNotResidential = condoKeys.filter((x) => !residentialKeys.includes(x))
+    // const inResidentialNotCondo = residentialKeys.filter((x) => !condoKeys.includes(x))
+    // const inCondoAndResidential = condoKeys.filter((x) => residentialKeys.includes(x))
+    // const inCondoAndResidentialAndCommercial = inCondoAndResidential.filter((x) =>
+    //   commercialKeys.includes(x),
+    // )
+
+    // console.log('inCondoRes', inCondoAndRes)
+    // console.log('inResNotCondo', inResNotCondo)
+    // console.log('inCondoNotRes', inCondoNotRes)
+    // console.log('inCondoAndResAndCom', inCondoAndResAndCom)
+
+    // await fs.writeFile(
+    //   'columns.json',
+    //   JSON.stringify(
+    //     {
+    //       condoKeys,
+    //       residentialKeys,
+    //       commercialKeys,
+    //       inCondoNotResidential,
+    //       inResidentialNotCondo,
+    //       inCondoAndResidential,
+    //       inCondoAndResidentialAndCommercial,
+    //     },
+    //     undefined,
+    //     2,
+    //   ),
+    // )
   })
 }
 
@@ -91,7 +132,8 @@ const testMetadata = async () => {
 
 const main = async () => {
   console.log('Start!')
-  await testMetadata()
+  // await testMetadata()
+  await testDataMap()
 
   console.log('Finish!')
 }

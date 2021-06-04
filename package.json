@@ -4,7 +4,7 @@
   "description": "RETS Client in Typescript",
   "repository": "https://github.com/aeq/rets-client",
   "author": "Aequilibrium Software Inc",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "main": "index.js",
   "types": "index",
   "files": [

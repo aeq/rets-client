@@ -3,6 +3,7 @@ import { getLoginAction } from './getLoginAction'
 import { getLogoutAction } from './getLogoutAction'
 import { getMetadataAction } from './getMetadataAction'
 import { getSearchAction } from './getSearchAction'
+import { getDataMapAction } from './getDataMapAction'
 
 type GetClientCallback = (actions: RetsClientActions) => void
 
@@ -18,8 +19,9 @@ export const getClient = async (
 
     const search = getSearchAction(actions[RetsAction.Search])
     const getMetadata = getMetadataAction(actions[RetsAction.GetMetadata])
+    const getDataMap = getDataMapAction(getMetadata)
     // const getObjects = getObjectsAction(options)
-    await callback({ search, getMetadata })
+    await callback({ search, getMetadata, getDataMap })
   } catch (e) {
     console.error('ERROR::', e)
   } finally {

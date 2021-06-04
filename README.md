@@ -20,7 +20,7 @@ const config = {
   password: 'my-rets-password',
 }
 
-await getClient(config, async ({ search, getMetadata }) => {
+await getClient(config, async ({ search, getMetadata, getDataMap }) => {
 
   // Figure out the data structure
   const resources = await getMetadata({
@@ -32,6 +32,11 @@ await getClient(config, async ({ search, getMetadata }) => {
     type: RetsMetadataType.Class,
   })
   console.log('getMetadata.Class', classes)
+
+  // Build a Datamap of the RETS Data
+  const dataMap = await getDataMap()
+  console.log('getDataMap', dataMap)
+
 
   // Search for data
   const listings = await search({
@@ -45,6 +50,7 @@ await getClient(config, async ({ search, getMetadata }) => {
 
   // retrieve some objects/images
 })
+
 
 
 ```

@@ -21,6 +21,7 @@ export const parseRetsResponse = (data: any, headers?: any) => {
 
   const parsed = parser.parse(data, parseOptions)
   // console.log('parsed', parsed)
+  // console.log('data', parsed.RETS['METADATA-TABLE'])
   // if (parsed[RetsKeys.Rets][RetsKeys.Status]) {
   //   throw new Error(`${parsed[RetsKeys.Rets][RetsKeys.Status]['@_ReplyText']}::${parsed[RetsKeys.Rets][RetsKeys.Status]['@_ReplyText']}`)
   // }

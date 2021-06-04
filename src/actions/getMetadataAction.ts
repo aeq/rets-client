@@ -4,7 +4,7 @@ import { executeCall } from 'utils'
 
 export const getMetadataAction =
   (actionConfig: IRetsRequestConfig) =>
-  async (userOptions: IRetsMetadataOptions): Promise<any> => {
+  async (userOptions: IRetsMetadataOptions): Promise<Array<any>> => {
     const { type, id, format, classType } = userOptions
     const data = {
       Type: type,
