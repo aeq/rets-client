@@ -70,6 +70,16 @@ const testMetadata = async () => {
       classType: 'CommercialProperty',
       id: 'Property',
     })
+    await fs.writeFile(
+      'tables.json',
+      JSON.stringify(
+        {
+          tables,
+        },
+        undefined,
+        2,
+      ),
+    )
     console.log('getMetadata.Table', tables)
 
     // const objects = await getMetadata({
@@ -132,7 +142,7 @@ const testDataMap = async () => {
 
 const main = async () => {
   console.log('Start!')
-  // await testMetadata()
+  await testMetadata()
   await testDataMap()
 
   console.log('Finish!')

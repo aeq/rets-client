@@ -1,6 +1,7 @@
 import { metadataHandler } from 'handlers'
 import { IRetsMetadataOptions, IRetsRequestConfig, RetsFormat } from 'types'
 import { executeCall } from 'utils'
+// import { promises as fs } from 'fs'
 
 export const getMetadataAction =
   (actionConfig: IRetsRequestConfig) =>
@@ -13,6 +14,17 @@ export const getMetadataAction =
     }
 
     const response = actionConfig ? await executeCall(actionConfig, data) : null
+
+    // await fs.writeFile(
+    //   'response.json',
+    //   JSON.stringify(
+    //     {
+    //       data: response.data,
+    //     },
+    //     undefined,
+    //     2,
+    //   ),
+    // )
 
     const results = await metadataHandler(response)
 
