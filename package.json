@@ -1,12 +1,13 @@
 {
   "name": "@aequilibrium/rets-client",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "RETS Client in Typescript",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aeq/rets-client.git"
   },
   "author": "Aequilibrium Software Inc",
+  "homepage": "https://aequilibrium.com/",
   "license": "MIT",
   "main": "index.js",
   "types": "index",
@@ -45,6 +46,5 @@
   },
   "bugs": {
     "url": "https://github.com/aeq/rets-client/issues"
-  },
-  "homepage": "https://github.com/aeq/rets-client#readme"
+  }
 }
