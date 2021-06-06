@@ -4,15 +4,15 @@ A RETS (Real Estate Transaction Standard) Client written in Typescript.
 
 # Install
 
-if using yarn: ```yarn add @aeq/rets-client```
+if using yarn: ```yarn add @aequilibrium/rets-client```
 
-if using npm: ```npm i @aeq/rets-client```
+if using npm: ```npm i @aequilibrium/rets-client```
 
 # Usage
 
 ```typescript
 
-import { getClient, RetsMetadataType } from '@aeq/rets-client';
+import { getClient, RetsMetadataType } from '@aequilibrium/rets-client';
 
 const config = {
   url: 'my-rets-url',
