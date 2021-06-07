@@ -20,8 +20,8 @@ export const parseRetsResponse = (data: any, headers?: any) => {
   // console.log('parseRetsResponse')
 
   const parsed = parser.parse(data, parseOptions)
-  console.warn('parsed', parsed)
-  console.warn('data', parsed.RETS)
+  // console.warn('parsed', parsed)
+  // console.warn('data', parsed.RETS)
   // if (parsed[RetsKeys.Rets][RetsKeys.Status]) {
   //   throw new Error(
   //     `${parsed[RetsKeys.Rets][RetsKeys.Status]['@_ReplyText']}::${
