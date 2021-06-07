@@ -1,4 +1,4 @@
-import { RetsKeys } from 'types/RetsKeys'
+import { RetsKeys } from '../types'
 
 const LINE_SPLIT = '\n'
 const KEY_SPLIT = /=(.*)$/

@@ -1,8 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import request from 'request'
 import axiosCookieJarSupport from 'axios-cookiejar-support'
 import { Store, CookieJar } from 'tough-cookie'
-import { IRetsResponse, IRetsClientOptions, IRetsRequestConfig, RetsRequestMethod } from 'types'
+import { IRetsResponse, IRetsClientOptions, IRetsRequestConfig, RetsRequestMethod } from '../types'
 import { parseRetsResponse } from './parseRetsResponse'
 
 axiosCookieJarSupport(axios)

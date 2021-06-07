@@ -1,4 +1,4 @@
-import { RetsKeys } from 'types/RetsKeys'
+import { RetsKeys } from '../types'
 
 const DATA_SPLIT = '\t'
 
@@ -9,6 +9,9 @@ export const columnDataHandler = ({
   [RetsKeys.Columns]: string
   [RetsKeys.Data]: string
 }): Record<string, string>[] => {
+  if (!columns || !data) {
+    return []
+  }
   const parsedColumns = columns.split(DATA_SPLIT)
   const parsedData = Array.isArray(data)
     ? data.map((row) => row.split(DATA_SPLIT))

@@ -1,3 +1,3 @@
 // export * from 'RetsClient'
-export * from 'actions'
-export * from 'types'
+export * from './actions'
+export * from './types'

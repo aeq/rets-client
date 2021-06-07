@@ -1,4 +1,4 @@
-import { RetsKeys } from 'types'
+import { RetsKeys } from '../types'
 import { columnDataHandler } from '.'
 
 export const searchHandler = async (response: any): Promise<any> =>

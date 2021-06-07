@@ -1,6 +1,6 @@
 {
   "name": "@aequilibrium/rets-client",
-  "version": "0.2.1",
+  "version": "0.2.15",
   "description": "RETS Client in Typescript",
   "repository": {
     "type": "git",
@@ -9,25 +9,20 @@
   "author": "Aequilibrium Software Inc",
   "homepage": "https://aequilibrium.com/",
   "license": "MIT",
-  "main": "index.js",
-  "types": "index",
-  "files": [
-    "dist"
-  ],
+  "main": "dist/index.js",
+  "types": "dist/index",
   "scripts": {
-    "prepublish": "tsc",
+    "prepublishOnly": "tsc",
     "build": "tsc",
     "start": "NODE_PATH=./dist node ./dist/test.js",
     "test": "jest"
   },
   "dependencies": {
-    "@types/request": "^2.48.5",
     "@types/tough-cookie": "^4.0.0",
     "axios": "^0.21.1",
     "axios-cookiejar-support": "^1.0.1",
     "dotenv": "^10.0.0",
     "fast-xml-parser": "^3.19.0",
-    "request": "^2.88.2",
     "tough-cookie": "^4.0.0"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 import { cookieCompare } from 'tough-cookie'
-import { RetsMetadataType, RetsKeys } from 'types'
+import { RetsMetadataType, RetsKeys } from '../types'
 import { columnDataHandler } from '.'
 
 export const metadataHandler = async (response: any): Promise<any> => {

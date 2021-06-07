@@ -1,6 +1,6 @@
-import { metadataHandler } from 'handlers'
-import { IRetsMetadataOptions, IRetsRequestConfig, RetsFormat } from 'types'
-import { executeCall } from 'utils'
+import { metadataHandler } from '../handlers'
+import { IRetsMetadataOptions, IRetsRequestConfig, RetsFormat } from '../types'
+import { executeCall } from '../utils'
 // import { promises as fs } from 'fs'
 
 export const getMetadataAction =

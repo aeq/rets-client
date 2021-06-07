@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import { promises as fs } from 'fs'
-import { RetsMetadataType } from 'types'
+import { RetsMetadataType } from './types'
 import { DdfCulture, getClient, IRetsMetadataOptions } from '.'
 // const { RetsClient, RetsVersion, RetsFormat, DdfCulture, RetsRequestMethod } = require('./src')
 
@@ -46,7 +46,6 @@ const testSearch = async () => {
       limit: 2,
       searchType: TREBResources.Property,
       className: TREBClass.ResidentialProperty,
-      culture: DdfCulture.EN_CA,
     })
     console.log('listing', listing)
   })
@@ -142,8 +141,8 @@ const testDataMap = async () => {
 
 const main = async () => {
   console.log('Start!')
-  await testMetadata()
-  await testDataMap()
+  await testSearch()
+  // await testDataMap()
 
   console.log('Finish!')
 }

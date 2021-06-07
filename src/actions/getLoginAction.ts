@@ -1,8 +1,8 @@
 import { URL } from 'url'
 
-import { IRetsClientOptions, IRetsRequestConfig, RetsAction, RetsRequestMethod } from 'types'
-import { executeCall } from 'utils'
-import { loginHandler } from 'handlers'
+import { IRetsClientOptions, IRetsRequestConfig, RetsAction, RetsRequestMethod } from '../types'
+import { executeCall } from '../utils'
+import { loginHandler } from '../handlers'
 
 export const getLoginAction =
   (actionConfig: IRetsClientOptions) => async (): Promise<Record<string, IRetsRequestConfig>> => {

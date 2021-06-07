@@ -1,4 +1,4 @@
-import { IRetsClientOptions, IRetsRequestConfig, RetsAction, RetsClientActions } from 'types'
+import { IRetsClientOptions, IRetsRequestConfig, RetsAction, RetsClientActions } from '../types'
 import { getLoginAction } from './getLoginAction'
 import { getLogoutAction } from './getLogoutAction'
 import { getMetadataAction } from './getMetadataAction'

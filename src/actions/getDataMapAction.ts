@@ -1,6 +1,6 @@
-import { metadataHandler } from 'handlers'
-import { IRetsMetadataOptions, IRetsRequestConfig, RetsFormat, RetsMetadataType } from 'types'
-import { executeCall } from 'utils'
+import { metadataHandler } from '../handlers'
+import { IRetsMetadataOptions, IRetsRequestConfig, RetsFormat, RetsMetadataType } from '../types'
+import { executeCall } from '../utils'
 
 type MetadataFunction = (userOptions: IRetsMetadataOptions) => Promise<any[]>
 

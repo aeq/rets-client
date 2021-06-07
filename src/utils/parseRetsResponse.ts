@@ -1,5 +1,5 @@
 import parser from 'fast-xml-parser'
-import { RetsKeys } from 'types/RetsKeys'
+import { RetsKeys } from '../types'
 
 const parseOptions = {
   attributeNamePrefix: '@_',
@@ -20,10 +20,14 @@ export const parseRetsResponse = (data: any, headers?: any) => {
   // console.log('parseRetsResponse')
 
   const parsed = parser.parse(data, parseOptions)
-  // console.log('parsed', parsed)
-  // console.log('data', parsed.RETS['METADATA-TABLE'])
+  console.warn('parsed', parsed)
+  console.warn('data', parsed.RETS)
   // if (parsed[RetsKeys.Rets][RetsKeys.Status]) {
-  //   throw new Error(`${parsed[RetsKeys.Rets][RetsKeys.Status]['@_ReplyText']}::${parsed[RetsKeys.Rets][RetsKeys.Status]['@_ReplyText']}`)
+  //   throw new Error(
+  //     `${parsed[RetsKeys.Rets][RetsKeys.Status]['@_ReplyText']}::${
+  //       parsed[RetsKeys.Rets][RetsKeys.Status]['@_ReplyText']
+  //     }`,
+  //   )
   // }
 
   return parsed

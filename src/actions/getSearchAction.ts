@@ -1,13 +1,14 @@
-import { searchHandler } from 'handlers'
+import { searchHandler } from '../handlers'
 import {
+  DdfCulture,
   IRetsRequestConfig,
   IRetsSearchOptions,
   RetsFormat,
   RetsQueryCountType,
   RetsQueryStandardNamesType,
   RetsQueryType,
-} from 'types'
-import { executeCall } from 'utils'
+} from '../types'
+import { executeCall } from '../utils'
 
 export const getSearchAction =
   (actionConfig: IRetsRequestConfig) => async (options: IRetsSearchOptions) => {
@@ -36,7 +37,7 @@ export const getSearchAction =
       Offset: offset || 1,
       Count: count || RetsQueryCountType.OnlyRecord,
       Limit: limit || 'NONE',
-      Culture: culture,
+      Culture: culture || DdfCulture.EN_CA,
       Select: select ? select.join(',') : undefined,
     }
     const response = actionConfig ? await executeCall(actionConfig, data) : null
