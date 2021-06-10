@@ -1,7 +1,10 @@
-import parser from 'fast-xml-parser'
+import { parse, X2jOptionsOptional } from 'fast-xml-parser'
+import { promises as fs } from 'fs'
+
 import { RetsKeys } from '../types'
 
-const parseOptions = {
+const defaultParseOptions = {
+  // fast-xml-parser config
   attributeNamePrefix: '@_',
   textNodeName: '#text',
   ignoreAttributes: false,
@@ -19,16 +22,10 @@ const parseOptions = {
 export const parseRetsResponse = (data: any, headers?: any) => {
   // console.log('parseRetsResponse')
 
-  const parsed = parser.parse(data, parseOptions)
-  // console.warn('parsed', parsed)
-  // console.warn('data', parsed.RETS)
-  // if (parsed[RetsKeys.Rets][RetsKeys.Status]) {
-  //   throw new Error(
-  //     `${parsed[RetsKeys.Rets][RetsKeys.Status]['@_ReplyText']}::${
-  //       parsed[RetsKeys.Rets][RetsKeys.Status]['@_ReplyText']
-  //     }`,
-  //   )
-  // }
+  const parseOptions = {
+    ...defaultParseOptions,
+  }
+  const parsed = parse(data, parseOptions)
 
   return parsed
 }

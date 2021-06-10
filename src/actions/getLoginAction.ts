@@ -14,6 +14,7 @@ export const getLoginAction =
         username,
         password,
       },
+      action: 'login',
     })
     const parsedUrl = new URL(baseUrl)
 
@@ -36,6 +37,7 @@ export const getLoginAction =
                   password,
                 },
                 withCredentials: true,
+                action: key.toLowerCase(),
               },
             }
           : {}),

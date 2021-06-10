@@ -36,6 +36,8 @@
         "tsx": "never"
       }
     ],
+    "no-template-curly-in-string": "off",
+    "no-new-func": "off",
     "semi": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],

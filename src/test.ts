@@ -10,6 +10,8 @@ const config = {
   url: process.env.RETS_TEST_URL || '',
   username: process.env.RETS_TEST_USERNAME || '',
   password: process.env.RETS_TEST_PASSWORD || '',
+  writeResponseToFile: true,
+  writeRawResponseToFile: true,
 }
 
 /// /// TREB Specifics //////
@@ -43,7 +45,7 @@ const testSearch = async () => {
     const listing = await search({
       // query: '(Status=A)',
       query: '(timestamp_sql=2021-04-01T00:00:00+)',
-      limit: 2,
+      // limit: 2,
       searchType: TREBResources.Property,
       className: TREBClass.ResidentialProperty,
     })

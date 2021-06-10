@@ -11,4 +11,10 @@ export interface IRetsRequestConfig {
   params?: any
   data?: any
   auth?: AuthConfig
+
+  writeResponseToFile?: boolean
+  writeResponseFormat?: string
+  writeRawResponseToFile?: boolean
+  writeRawResponseFormat?: string
+  action?: string
 }
