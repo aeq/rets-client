@@ -10,8 +10,8 @@ const config = {
   url: process.env.RETS_TEST_URL || '',
   username: process.env.RETS_TEST_USERNAME || '',
   password: process.env.RETS_TEST_PASSWORD || '',
-  writeResponseToFile: true,
-  writeRawResponseToFile: true,
+  // writeResponseToFile: true,
+  // writeRawResponseToFile: true,
 }
 
 /// /// TREB Specifics //////
