@@ -1,4 +1,4 @@
-import { metadataHandler } from '../handlers'
+import { MetadataParser } from '../stream'
 import { IRetsMetadataOptions, IRetsRequestConfig, RetsFormat } from '../types'
 import { executeCall } from '../utils'
 // import { promises as fs } from 'fs'
@@ -6,7 +6,10 @@ import { executeCall } from '../utils'
 export const getMetadataAction =
   (actionConfig: IRetsRequestConfig) =>
   async (userOptions: IRetsMetadataOptions): Promise<Array<any>> => {
-    const { type, id, format, classType } = userOptions
+    const { type, id, format, classType } = {
+      ...userOptions,
+    }
+
     const data = {
       Type: type,
       ID: classType && id ? `${id}:${classType}` : id || '0',
@@ -15,18 +18,11 @@ export const getMetadataAction =
 
     const response = actionConfig ? await executeCall(actionConfig, data) : null
 
-    // await fs.writeFile(
-    //   'response.json',
-    //   JSON.stringify(
-    //     {
-    //       data: response.data,
-    //     },
-    //     undefined,
-    //     2,
-    //   ),
-    // )
+    const metadataParser = new MetadataParser()
 
-    const results = await metadataHandler(response)
+    response.pipe(metadataParser)
 
-    return results[type] || null
+    await new Promise((fulfill) => metadataParser.on('close', fulfill))
+
+    return metadataParser.data[type]
   }

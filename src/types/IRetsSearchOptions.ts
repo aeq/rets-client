@@ -2,6 +2,7 @@ import { DdfCulture, RetsFormat } from 'types'
 import { RetsQueryCountType } from './RetsQueryCountType'
 import { RetsQueryStandardNamesType } from './RetsQueryStandardNamesType'
 import { RetsQueryType } from './RetsQueryType'
+import { ReturnType } from './ReturnType'
 
 export interface IRetsSearchOptions {
   query: string
@@ -17,4 +18,5 @@ export interface IRetsSearchOptions {
   limit?: number
   culture?: DdfCulture
   select?: Array<string>
+  returnType?: ReturnType
 }

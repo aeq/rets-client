@@ -1,4 +1,8 @@
-import { searchHandler } from '../handlers'
+import { createReadStream, createWriteStream } from 'fs'
+import { Readable } from 'stream'
+
+import { getSearchItemStream, ObjectCollector } from '../stream'
+import { executeCall } from '../utils'
 import {
   DdfCulture,
   IRetsRequestConfig,
@@ -7,11 +11,16 @@ import {
   RetsQueryCountType,
   RetsQueryStandardNamesType,
   RetsQueryType,
+  ReturnType,
 } from '../types'
-import { executeCall } from '../utils'
+
+const defaultOptions = {
+  returnType: ReturnType.JSON,
+}
 
 export const getSearchAction =
-  (actionConfig: IRetsRequestConfig) => async (options: IRetsSearchOptions) => {
+  (actionConfig: IRetsRequestConfig) =>
+  async (options: IRetsSearchOptions): Promise<Record<string, string>[] | Readable> => {
     const {
       queryType,
       restrictedIndicator,
@@ -25,7 +34,12 @@ export const getSearchAction =
       className,
       culture,
       select,
-    } = options
+      returnType,
+    } = {
+      ...defaultOptions,
+      ...options,
+    }
+
     const data = {
       Query: query,
       SearchType: searchType,
@@ -41,46 +55,24 @@ export const getSearchAction =
       Select: select ? select.join(',') : undefined,
     }
     const response = actionConfig ? await executeCall(actionConfig, data) : null
+    // response.pipe(createWriteStream('response-search-simple.json'))
 
-    const results = searchHandler(response)
+    // const response = createReadStream('response-search-simple.json')
+    // const response = createReadStream('response-raw-2021-06-09-search.json')
 
-    return results
+    const searchStream = getSearchItemStream(response)
+
+    if (returnType === ReturnType.JSON) {
+      const objectCollector = new ObjectCollector()
+
+      searchStream.pipe(objectCollector)
+
+      // wait for stream to end before returning collected objects
+      await new Promise((fulfill) => objectCollector.on('close', fulfill))
+
+      // console.log('done Data collect', objectCollector.objects)
+      return objectCollector.objects
+    }
+
+    return searchStream
   }
-
-// public async search(userOptions: IRetsSearchOptions): Promise<any> {
-//   const {
-//     queryType,
-//     restrictedIndicator,
-//     standardNames,
-//     format,
-//     offset,
-//     count,
-//     limit,
-//     query,
-//     searchType,
-//     className,
-//     culture,
-//     select,
-//   } = userOptions
-//   const data = {
-//     Query: query,
-//     SearchType: searchType,
-//     Class: className,
-//     QueryType: queryType || RetsQueryType.DMQL2,
-//     RestrictedIndicator: restrictedIndicator || '***',
-//     StandardNames: standardNames || RetsQueryStandardNamesType.UseSystemName,
-//     Format: format || RetsFormat.CompactDecoded,
-//     Offset: offset || 1,
-//     Count: count || RetsQueryCountType.OnlyRecord,
-//     Limit: limit || 'NONE',
-//     Culture: culture,
-//     Select: select ? select.join(',') : undefined,
-//   }
-//   const response = this.actions[RetsAction.Search]
-//     ? await executeCall(this.actions[RetsAction.Search], data)
-//     : null
-
-//   const results = searchHandler(response)
-
-//   return results
-// }

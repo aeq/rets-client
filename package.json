@@ -1,6 +1,6 @@
 {
   "name": "@aequilibrium/rets-client",
-  "version": "0.2.18",
+  "version": "0.3.0",
   "description": "RETS Client in Typescript",
   "repository": {
     "type": "git",
@@ -14,19 +14,21 @@
   "scripts": {
     "prepublishOnly": "tsc",
     "build": "tsc",
-    "start": "NODE_PATH=./dist node ./dist/test.js",
+    "start": "NODE_PATH=./dist node --trace-uncaught ./dist/test.js",
     "test": "jest"
   },
   "dependencies": {
+    "@types/node-expat": "^2.3.1",
     "@types/tough-cookie": "^4.0.0",
     "axios": "^0.21.1",
     "axios-cookiejar-support": "^1.0.1",
     "dotenv": "^10.0.0",
-    "fast-xml-parser": "^3.19.0",
+    "node-expat": "^2.4.0",
     "tough-cookie": "^4.0.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
+    "@types/node": "^15.12.2",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
     "eslint": "^7.27.0",

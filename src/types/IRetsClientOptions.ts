@@ -9,12 +9,7 @@ export interface IRetsClientOptions {
 
   format?: RetsFormat
 
-  // debuging and output
-  writeResponseToFile?: boolean
-
-  writeResponseFormat?: string
-
-  writeRawResponseToFile?: boolean
-
-  writeRawResponseFormat?: string
+  // callbacks
+  onResponse?: (response: any) => void
+  onParse?: (parsed: any) => void
 }

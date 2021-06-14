@@ -1,15 +1,31 @@
 import dotenv from 'dotenv'
-import { promises as fs } from 'fs'
-import { RetsMetadataType } from './types'
+import { promises as fs, createWriteStream } from 'fs'
+import { Transform, Writable, Readable } from 'stream'
+import { RetsMetadataType, ReturnType } from './types'
 import { DdfCulture, getClient, IRetsMetadataOptions } from '.'
 // const { RetsClient, RetsVersion, RetsFormat, DdfCulture, RetsRequestMethod } = require('./src')
 
 dotenv.config()
 
+const dateToString = (date: Date) =>
+  `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date
+    .getDate()
+    .toString()
+    .padStart(2, '0')}`
+
 const config = {
   url: process.env.RETS_TEST_URL || '',
   username: process.env.RETS_TEST_USERNAME || '',
   password: process.env.RETS_TEST_PASSWORD || '',
+
+  onResponse: async ({ response, action }: { response: any; action: string }) => {
+    const date = dateToString(new Date())
+    await fs.writeFile(`response-${date}-${action}.raw`, response.data)
+  },
+  onParse: async ({ response, action }: { response: any; action: string }) => {
+    const date = dateToString(new Date())
+    await fs.writeFile(`response-parsed-${date}-${action}.json`, response.data)
+  },
   // writeResponseToFile: true,
   // writeRawResponseToFile: true,
 }
@@ -42,47 +58,89 @@ const testLogin = async () => {
 const testSearch = async () => {
   console.log('>> testSearch')
   await getClient(config, async ({ search }) => {
-    const listing = await search({
+    const listings = (await search({
       // query: '(Status=A)',
-      query: '(timestamp_sql=2021-04-01T00:00:00+)',
-      // limit: 2,
+      query: '(timestamp_sql=2021-06-01T00:00:00+)',
+      limit: 2,
       searchType: TREBResources.Property,
       className: TREBClass.ResidentialProperty,
-    })
-    console.log('listing', listing)
+    })) as Record<string, string>[]
+
+    console.log(
+      'listings',
+      listings.map((item) => item.Ml_num),
+    )
+  })
+}
+const testStreamSearch = async () => {
+  console.log('>> testStreamSearch')
+  await getClient(config, async ({ search }) => {
+    let avgPrice = 0
+    let count = 0
+
+    const searchStream = (
+      (await search({
+        // query: '(Status=A)',
+        query: '(timestamp_sql=2021-06-01T00:00:00+)',
+        limit: 2,
+        searchType: TREBResources.Property,
+        className: TREBClass.ResidentialProperty,
+        returnType: ReturnType.Stream,
+      })) as Readable
+    )
+      .pipe(
+        new Transform({
+          objectMode: true,
+          transform: (data, _, done) => {
+            const orig = parseFloat(data.Orig_dol)
+            avgPrice = (avgPrice * count + (Number.isNaN(orig) ? 0 : orig)) / (count + 1)
+            count += Number.isNaN(orig) ? 0 : 1
+            done(null, data)
+          },
+        }),
+      )
+      .pipe(
+        new Writable({
+          objectMode: true,
+          write: (data, _, done) => {
+            console.log('Store to DB!', data.Ml_num)
+            done()
+          },
+        }),
+      )
+    // wait for the stream to finish
+    await new Promise((fulfill) => searchStream.on('close', fulfill))
+    console.log('avgPrice', avgPrice, ' out of ', count)
   })
 }
 
 const testMetadata = async () => {
   console.log('>> testMetada')
   await getClient(config, async ({ getMetadata }) => {
-    // const resources = await getMetadata({
-    //   type: RetsMetadataType.Resource,
-    // })
-    // console.log('getMetadata.Resource', resources)
-
+    const resources = await getMetadata({
+      type: RetsMetadataType.Resource,
+    })
+    console.log('getMetadata.Resource', resources)
     // const classes = await getMetadata({
     //   type: RetsMetadataType.Class,
     // })
     // console.log('getMetadata.Class', classes)
-
-    const tables = await getMetadata({
-      type: RetsMetadataType.Table,
-      classType: 'CommercialProperty',
-      id: 'Property',
-    })
-    await fs.writeFile(
-      'tables.json',
-      JSON.stringify(
-        {
-          tables,
-        },
-        undefined,
-        2,
-      ),
-    )
-    console.log('getMetadata.Table', tables)
-
+    // const tables = await getMetadata({
+    //   type: RetsMetadataType.Table,
+    //   classType: 'CommercialProperty',
+    //   id: 'Property',
+    // })
+    // await fs.writeFile(
+    //   'tables.json',
+    //   JSON.stringify(
+    //     {
+    //       tables,
+    //     },
+    //     undefined,
+    //     2,
+    //   ),
+    // )
+    // console.log('getMetadata.Table', tables)
     // const objects = await getMetadata({
     //   type: RetsMetadataType.Objects,
     // })
@@ -95,37 +153,6 @@ const testDataMap = async () => {
   await getClient(config, async ({ getDataMap }) => {
     const dataMap = await getDataMap()
     console.log('getDataMap', dataMap)
-    // const condoKeys: Array<string> = dataMap?.Property?.CondoProperty
-    // const residentialKeys: Array<string> = dataMap?.Property?.ResidentialProperty
-    // const commercialKeys: Array<string> = dataMap?.Property?.CommercialProperty
-    // const inCondoNotResidential = condoKeys.filter((x) => !residentialKeys.includes(x))
-    // const inResidentialNotCondo = residentialKeys.filter((x) => !condoKeys.includes(x))
-    // const inCondoAndResidential = condoKeys.filter((x) => residentialKeys.includes(x))
-    // const inCondoAndResidentialAndCommercial = inCondoAndResidential.filter((x) =>
-    //   commercialKeys.includes(x),
-    // )
-
-    // console.log('inCondoRes', inCondoAndRes)
-    // console.log('inResNotCondo', inResNotCondo)
-    // console.log('inCondoNotRes', inCondoNotRes)
-    // console.log('inCondoAndResAndCom', inCondoAndResAndCom)
-
-    // await fs.writeFile(
-    //   'columns.json',
-    //   JSON.stringify(
-    //     {
-    //       condoKeys,
-    //       residentialKeys,
-    //       commercialKeys,
-    //       inCondoNotResidential,
-    //       inResidentialNotCondo,
-    //       inCondoAndResidential,
-    //       inCondoAndResidentialAndCommercial,
-    //     },
-    //     undefined,
-    //     2,
-    //   ),
-    // )
   })
 }
 
@@ -143,8 +170,11 @@ const testDataMap = async () => {
 
 const main = async () => {
   console.log('Start!')
-  await testSearch()
+  // await testLogin()
+  // await testMetadata()
   // await testDataMap()
+  // await testSearch()
+  await testStreamSearch()
 
   console.log('Finish!')
 }

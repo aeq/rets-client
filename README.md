@@ -12,7 +12,7 @@ if using npm: ```npm i @aequilibrium/rets-client```
 
 ```typescript
 
-import { getClient, RetsMetadataType } from '@aequilibrium/rets-client';
+import { getClient, RetsMetadataType, ReturnType } from '@aequilibrium/rets-client';
 
 const config = {
   url: 'my-rets-url',
@@ -33,12 +33,12 @@ await getClient(config, async ({ search, getMetadata, getDataMap }) => {
   })
   console.log('getMetadata.Class', classes)
 
-  // Build a Datamap of the RETS Data
+  // Build a Datamap of the RETS Data Structure
   const dataMap = await getDataMap()
   console.log('getDataMap', dataMap)
 
 
-  // Search for data
+  // Search for data 
   const listings = await search({
     query: '(Status=A)',
     limit: 5,
@@ -47,6 +47,31 @@ await getClient(config, async ({ search, getMetadata, getDataMap }) => {
     culture: DdfCulture.EN_CA,
   })
   console.log('listing', listings)
+
+  // search for data using streams
+  let count = 0
+  const searchStream = (
+    (await search({
+      query: '(Status=A)',
+      limit: 5,
+      searchType: 'Property',
+      className: 'ResidentialProperty',
+      culture: DdfCulture.EN_CA,
+      returnType: ReturnType.Stream,
+    })) as Readable
+  )
+    .pipe(
+      new Writable({
+        objectMode: true,
+        write: (data, _, done) => {
+          count += 1
+          done()
+        },
+      }),
+    )
+  // wait for the stream to finish
+  await new Promise((fulfill) => searchStream.on('close', fulfill))
+  console.log('final Count', count)
 
   // retrieve some objects/images
 })

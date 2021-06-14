@@ -14,19 +14,21 @@ export const getClient = async (
   let actions: Record<string, IRetsRequestConfig> = {}
   try {
     const login = getLoginAction(options)
-    // login and get the allowed actions
+    // login and get the supported actions
+
     actions = await login()
 
     const search = getSearchAction(actions[RetsAction.Search])
     const getMetadata = getMetadataAction(actions[RetsAction.GetMetadata])
     const getDataMap = getDataMapAction(getMetadata)
     // const getObjects = getObjectsAction(options)
+
     await callback({ search, getMetadata, getDataMap })
   } catch (e) {
     console.error('ERROR::', e)
   } finally {
-    const logout = getLogoutAction(actions[RetsAction.Logout])
-    await logout()
+    // const logout = getLogoutAction(actions[RetsAction.Logout])
+    // await logout()
   }
 }
 
