@@ -1,6 +1,6 @@
 {
   "name": "@aequilibrium/rets-client",
-  "version": "0.3.0",
+  "version": "0.3.3",
   "description": "RETS Client in Typescript",
   "repository": {
     "type": "git",
@@ -18,12 +18,11 @@
     "test": "jest"
   },
   "dependencies": {
-    "@types/node-expat": "^2.3.1",
+    "@aequilibrium/xmlr": "^0.1.1",
     "@types/tough-cookie": "^4.0.0",
     "axios": "^0.21.1",
     "axios-cookiejar-support": "^1.0.1",
     "dotenv": "^10.0.0",
-    "node-expat": "^2.4.0",
     "tough-cookie": "^4.0.0"
   },
   "devDependencies": {

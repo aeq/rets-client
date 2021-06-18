@@ -1,8 +1,9 @@
-import { DdfCulture, RetsFormat } from 'types'
+import { DdfCulture } from './DdfCulture'
 import { RetsQueryCountType } from './RetsQueryCountType'
 import { RetsQueryStandardNamesType } from './RetsQueryStandardNamesType'
 import { RetsQueryType } from './RetsQueryType'
 import { ReturnType } from './ReturnType'
+import { RetsFormat } from './RetsFormat'
 
 export interface IRetsSearchOptions {
   query: string

@@ -55,6 +55,7 @@ export const getSearchAction =
       Select: select ? select.join(',') : undefined,
     }
     const response = actionConfig ? await executeCall(actionConfig, data) : null
+
     // response.pipe(createWriteStream('response-search-simple.json'))
 
     // const response = createReadStream('response-search-simple.json')

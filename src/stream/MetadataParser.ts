@@ -1,7 +1,7 @@
 import { URL } from 'url'
-import { Parser } from 'node-expat'
+import { Parser } from '@aequilibrium/xmlr'
 
-import { IRetsRequestConfig, RetsAction, RetsKeys, RetsMetadataType } from 'types'
+import { IRetsRequestConfig, RetsAction, RetsKeys, RetsMetadataType } from '../types'
 
 enum Status {
   Waiting = '',
@@ -22,7 +22,7 @@ export class MetadataParser extends Parser {
   status: Status
 
   constructor() {
-    super('UTF-8')
+    super()
 
     this.data = []
     this.resource = ''

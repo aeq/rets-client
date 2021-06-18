@@ -1,6 +1,7 @@
 import { Transform, pipeline, Readable } from 'stream'
-import { Parser } from 'node-expat'
-import { RetsKeys } from 'types'
+import { Parser } from '@aequilibrium/xmlr'
+
+import { RetsKeys } from '../types'
 
 enum Mode {
   Waiting = '',
@@ -10,7 +11,7 @@ enum Mode {
 
 const DATA_SPLIT = '\t'
 
-export const getSearchItemStream = (xmlStream: Readable) => {
+export const getSearchItemStream = (xmlStream: Readable | null) => {
   const transformer = new Transform({
     objectMode: true,
     transform(data, _, callback) {
@@ -22,7 +23,7 @@ export const getSearchItemStream = (xmlStream: Readable) => {
       callback()
     },
   })
-  const searchParser = new Parser('UTF-8')
+  const searchParser = new Parser() // new Parser('UTF-8')
 
   let columns: string[] = []
   let mode = Mode.Waiting
@@ -112,7 +113,9 @@ export const getSearchItemStream = (xmlStream: Readable) => {
   // pipeline([xmlStream, searchParser], (err, val) => {
   //   console.log('pipeline finished', err, val)
   // })
-  xmlStream.pipe(searchParser)
+  if (xmlStream !== null) {
+    xmlStream.pipe(searchParser)
+  }
 
   return transformer
 }

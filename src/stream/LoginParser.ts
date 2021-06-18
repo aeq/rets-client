@@ -1,7 +1,7 @@
 import { URL } from 'url'
-import { Parser } from 'node-expat'
+import { Parser } from '@aequilibrium/xmlr'
 
-import { IRetsRequestConfig, RetsAction, RetsKeys } from 'types'
+import { IRetsRequestConfig, RetsAction, RetsKeys } from '../types'
 
 enum Status {
   Waiting = '',
@@ -18,7 +18,7 @@ export class LoginParser extends Parser {
   baseAction: IRetsRequestConfig
 
   constructor(baseAction: IRetsRequestConfig) {
-    super('UTF-8')
+    super()
     this.actions = {}
     this.status = Status.Waiting
     this.baseAction = baseAction
