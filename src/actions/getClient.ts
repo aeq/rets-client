@@ -18,6 +18,8 @@ export const getClient = async (
 
     actions = await login()
 
+    console.log('actions', actions)
+
     const search = getSearchAction(actions[RetsAction.Search])
     const getMetadata = getMetadataAction(actions[RetsAction.GetMetadata])
     const getDataMap = getDataMapAction(getMetadata)

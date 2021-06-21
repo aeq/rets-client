@@ -61,7 +61,7 @@ const testSearch = async () => {
     const listings = (await search({
       // query: '(Status=A)',
       query: '(timestamp_sql=2021-06-01T00:00:00+)',
-      limit: 2,
+      limit: 4,
       searchType: TREBResources.Property,
       className: TREBClass.ResidentialProperty,
     })) as Record<string, string>[]
@@ -82,7 +82,7 @@ const testStreamSearch = async () => {
       (await search({
         // query: '(Status=A)',
         query: '(timestamp_sql=2021-06-01T00:00:00+)',
-        limit: 2,
+        limit: 3,
         searchType: TREBResources.Property,
         className: TREBClass.ResidentialProperty,
         returnType: ReturnType.Stream,

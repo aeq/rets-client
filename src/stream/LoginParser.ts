@@ -7,8 +7,8 @@ enum Status {
   Waiting = '',
   CollectingActions = 'actions',
 }
-
-const KEY_SPLIT = /=(.*)$/
+const LINE_SPLIT = /\n/
+const KEY_SPLIT = /=/
 
 export class LoginParser extends Parser {
   actions: Record<string, IRetsRequestConfig>
@@ -28,6 +28,7 @@ export class LoginParser extends Parser {
   }
 
   startElement(name: string, attrs: any): void {
+    // console.log('LoginParser.startElement', name, attrs)
     switch (name) {
       case RetsKeys.Rets:
         if (attrs?.ReplyCode && attrs?.ReplyCode !== '0') {
@@ -46,19 +47,24 @@ export class LoginParser extends Parser {
 
   text(text: string): void {
     if (this.status === Status.CollectingActions) {
-      const [key, value] = text.split(KEY_SPLIT)
+      const lines = text.split(LINE_SPLIT)
+      lines.forEach((line) => {
+        const [key, value] = line.split(KEY_SPLIT)
 
-      if (Object.keys(RetsAction).includes(key)) {
-        const { url: baseUrl } = this.baseAction
-        const parsedURL = new URL(baseUrl)
-        parsedURL.pathname = value
-        const url = parsedURL.toString()
+        // console.log('LoginParser.text', key, '||', value)
+        if (Object.keys(RetsAction).includes(key)) {
+          const { url: baseUrl } = this.baseAction
+          // console.log('LoginParser.isRetsAction', baseUrl)
+          const parsedURL = new URL(baseUrl)
+          parsedURL.pathname = value
+          const url = parsedURL.toString()
 
-        this.actions[key] = {
-          ...this.baseAction,
-          url,
+          this.actions[key] = {
+            ...this.baseAction,
+            url,
+          }
         }
-      }
+      })
     }
   }
 }

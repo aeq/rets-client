@@ -1,6 +1,6 @@
 {
   "name": "@aequilibrium/rets-client",
-  "version": "0.3.3",
+  "version": "0.3.6",
   "description": "RETS Client in Typescript",
   "repository": {
     "type": "git",
