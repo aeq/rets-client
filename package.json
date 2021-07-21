@@ -18,11 +18,12 @@
     "test": "jest"
   },
   "dependencies": {
-    "@aequilibrium/xmlr": "^0.1.1",
+    "@aequilibrium/xmlr": "^0.1.2",
     "@types/tough-cookie": "^4.0.0",
     "axios": "^0.21.1",
     "axios-cookiejar-support": "^1.0.1",
     "dotenv": "^10.0.0",
+    "parse-multipart-data": "^1.2.0",
     "tough-cookie": "^4.0.0"
   },
   "devDependencies": {

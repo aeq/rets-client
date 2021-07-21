@@ -14,11 +14,11 @@ export const getLoginAction =
       },
     }
 
-    const response = await executeCall(baseAction)
-
     const loginParser = new LoginParser(baseAction)
 
-    response.pipe(loginParser)
+    const { stream } = await executeCall(baseAction)
+
+    stream.pipe(loginParser)
 
     await new Promise((fulfill) => loginParser.on('close', fulfill))
 

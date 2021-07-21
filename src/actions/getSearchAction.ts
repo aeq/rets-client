@@ -54,14 +54,11 @@ export const getSearchAction =
       Culture: culture || DdfCulture.EN_CA,
       Select: select ? select.join(',') : undefined,
     }
-    const response = actionConfig ? await executeCall(actionConfig, data) : null
+    const { stream } = actionConfig ? await executeCall(actionConfig, data) : null
 
-    // response.pipe(createWriteStream('response-search-simple.json'))
+    // const response = createReadStream('test.raw')
 
-    // const response = createReadStream('response-search-simple.json')
-    // const response = createReadStream('response-raw-2021-06-09-search.json')
-
-    const searchStream = getSearchItemStream(response)
+    const searchStream = getSearchItemStream(stream)
 
     if (returnType === ReturnType.JSON) {
       const objectCollector = new ObjectCollector()

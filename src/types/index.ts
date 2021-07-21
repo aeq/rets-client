@@ -1,6 +1,7 @@
 export * from './DdfCulture'
 export * from './IRetsClientOptions'
 export * from './IRetsMetadataOptions'
+export * from './IRetsObjectOptions'
 export * from './IRetsRequestConfig'
 export * from './IRetsResponse'
 export * from './IRetsSearchOptions'

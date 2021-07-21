@@ -12,9 +12,7 @@ export interface IRetsRequestConfig {
   data?: any
   auth?: AuthConfig
 
-  writeResponseToFile?: boolean
-  writeResponseFormat?: string
-  writeRawResponseToFile?: boolean
-  writeRawResponseFormat?: string
+  debugResponseFilename?: undefined | string | ((config: IRetsRequestConfig) => string | undefined)
+
   action?: string
 }

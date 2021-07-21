@@ -7,6 +7,7 @@ enum GeneralRetsKeys {
   Status = 'RETS-STATUS',
   Response = 'RETS-RESPONSE',
   Delimiter = 'DELIMITER',
+  Metadata = 'METADATA',
 }
 
 export const RetsKeys = {

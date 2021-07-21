@@ -16,11 +16,11 @@ export const getMetadataAction =
       Format: format || RetsFormat.Compact,
     }
 
-    const response = actionConfig ? await executeCall(actionConfig, data) : null
+    const { stream } = actionConfig ? await executeCall(actionConfig, data) : null
 
     const metadataParser = new MetadataParser()
 
-    response.pipe(metadataParser)
+    stream.pipe(metadataParser)
 
     await new Promise((fulfill) => metadataParser.on('close', fulfill))
 

@@ -2,8 +2,11 @@ import axios, { AxiosRequestConfig } from 'axios'
 import axiosCookieJarSupport from 'axios-cookiejar-support'
 import { Store, CookieJar } from 'tough-cookie'
 import { promises as fs, createWriteStream } from 'fs'
+import { createHash } from 'crypto'
 
 // import { loginParser } from 'parsers'
+import { PassThrough, Readable, Transform } from 'stream'
+import { maxHeaderSize } from 'http'
 import {
   IRetsResponse,
   IRetsClientOptions,
@@ -20,8 +23,17 @@ const generateHeaders = () => ({
   'RETS-Version': 'RETS/1.7',
 })
 
-export const executeCall = async (config: IRetsRequestConfig, payload?: any): Promise<any> => {
-  const { method, url, auth } = config
+interface ExecuteCallType {
+  stream: Readable
+  headers: Record<string, string>
+}
+
+export const executeCall = async (
+  config: IRetsRequestConfig,
+  payload?: any,
+  headers?: any,
+): Promise<any> => {
+  const { method, url, auth, debugResponseFilename } = config
 
   const instance = axios.create()
 
@@ -29,13 +41,33 @@ export const executeCall = async (config: IRetsRequestConfig, payload?: any): Pr
     jar: cookieJar,
     method,
     url,
-    headers: generateHeaders(),
+    headers: {
+      ...generateHeaders(),
+      ...headers,
+    },
     auth,
     withCredentials: true,
     responseType: 'stream',
-    // transformResponse: parseRetsResponse,
+    // transformResponse: (data, headers) => {
+
+    // },
     ...(method === RetsRequestMethod.Get ? { params: { ...payload } } : { data: { ...payload } }),
   })
 
-  return result.data
+  const { data, headers: responseHeaders } = result
+
+  const debugFilename =
+    typeof debugResponseFilename === 'function'
+      ? debugResponseFilename(config)
+      : debugResponseFilename
+
+  const stream = new PassThrough()
+  const fileSave = new PassThrough()
+
+  if (debugFilename !== undefined) {
+    fileSave.pipe(createWriteStream(debugFilename))
+  }
+  data.pipe(stream).pipe(fileSave)
+
+  return { stream, headers: responseHeaders }
 }

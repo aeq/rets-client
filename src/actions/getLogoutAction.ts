@@ -2,7 +2,7 @@ import { IRetsRequestConfig } from '../types'
 import { executeCall } from '../utils'
 
 export const getLogoutAction = (actionConfig: IRetsRequestConfig) => async () => {
-  const response = actionConfig ? await executeCall(actionConfig) : null
+  const { stream } = actionConfig ? await executeCall(actionConfig) : null
 
-  await new Promise((fulfill) => response.on('close', fulfill))
+  await new Promise((fulfill) => stream.on('close', fulfill))
 }
