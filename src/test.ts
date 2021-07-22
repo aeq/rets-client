@@ -2,7 +2,13 @@ import dotenv from 'dotenv'
 import { promises as fs, createWriteStream } from 'fs'
 import { createHash } from 'crypto'
 import { Transform, Writable, Readable, PassThrough } from 'stream'
-import { IRetsClientOptions, RetsMetadataType, ReturnType, IRetsRequestConfig } from './types'
+import {
+  IRetsClientOptions,
+  RetsMetadataType,
+  ReturnType,
+  IRetsRequestConfig,
+  RetsObject,
+} from './types'
 import { DdfCulture, getClient, IRetsMetadataOptions } from '.'
 // const { RetsClient, RetsVersion, RetsFormat, DdfCulture, RetsRequestMethod } = require('./src')
 
@@ -25,7 +31,7 @@ const config = {
   //   // build hash name
   //   hash.update(url.toString())
 
-  //   return `${now.toISOString()}-${hash.digest('hex').toString()}.raw`
+  //   return `tests/${now.toISOString()}-${hash.digest('hex').toString()}.raw`
   // },
 }
 
@@ -138,13 +144,21 @@ const testStreamSearch = async () => {
 const testObjects = async () => {
   console.log('>> testObjects')
   await getClient(config, async ({ getObject }) => {
-    const objects = (await getObject({
+    const objects = await getObject({
       resource: TREBResources.Property,
       type: TREBObjects.Photo,
       contentId: 'N5280350',
-    })) as Record<string, string>[]
+    })
 
     console.log('objects', objects)
+    const dir = 'tests'
+    fs.mkdir(dir, { recursive: true })
+    console.log(`saveToFiles in directory [${dir}]`)
+    objects.forEach((obj) => {
+      if (obj.contentType === 'image/jpeg') {
+        fs.writeFile(`${dir}/${obj.objectId}.jpg`, obj.data)
+      }
+    })
   })
 }
 

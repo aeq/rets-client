@@ -7,6 +7,7 @@ import { createHash } from 'crypto'
 // import { loginParser } from 'parsers'
 import { PassThrough, Readable, Transform } from 'stream'
 import { maxHeaderSize } from 'http'
+import { deflateRaw } from 'zlib'
 import {
   IRetsResponse,
   IRetsClientOptions,
@@ -65,9 +66,13 @@ export const executeCall = async (
   const fileSave = new PassThrough()
 
   if (debugFilename !== undefined) {
+    // console.log('write to', debugFilename)
+    // fileSave.on('data', (data) => console.log('data', data))
+    // fileSave.on('close', () => console.log('close', debugFilename))
     fileSave.pipe(createWriteStream(debugFilename))
   }
-  data.pipe(stream).pipe(fileSave)
+
+  data.pipe(stream) // .pipe(fileSave)
 
   return { stream, headers: responseHeaders }
 }
