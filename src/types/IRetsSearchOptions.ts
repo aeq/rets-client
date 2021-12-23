@@ -19,5 +19,6 @@ export interface IRetsSearchOptions {
   limit?: number
   culture?: DdfCulture
   select?: Array<string>
+  processText?: (text: string) => string
   returnType?: ReturnType
 }

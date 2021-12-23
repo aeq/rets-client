@@ -16,6 +16,7 @@ import {
 
 const defaultOptions = {
   returnType: ReturnType.JSON,
+  processText: (text: string) => text,
 }
 
 export const getSearchAction =
@@ -35,6 +36,7 @@ export const getSearchAction =
       culture,
       select,
       returnType,
+      processText,
     } = {
       ...defaultOptions,
       ...options,
@@ -58,7 +60,7 @@ export const getSearchAction =
 
     // const response = createReadStream('test.raw')
 
-    const searchStream = getSearchItemStream(stream)
+    const searchStream = getSearchItemStream(stream, processText)
 
     if (returnType === ReturnType.JSON) {
       const objectCollector = new ObjectCollector()

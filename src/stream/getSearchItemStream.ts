@@ -11,7 +11,10 @@ enum Mode {
 
 const DATA_SPLIT = '\t'
 
-export const getSearchItemStream = (xmlStream: Readable | null) => {
+export const getSearchItemStream = (
+  xmlStream: Readable | null,
+  processText = (text: string) => text,
+) => {
   const transformer = new Transform({
     objectMode: true,
     transform(data, _, callback) {
@@ -90,7 +93,7 @@ export const getSearchItemStream = (xmlStream: Readable | null) => {
   }
 
   const onText = (text: string) => {
-    content += text
+    content += processText(text)
   }
 
   const onEnd = () => {

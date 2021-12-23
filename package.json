@@ -42,5 +42,9 @@
   },
   "bugs": {
     "url": "https://github.com/aeq/rets-client/issues"
+  },
+  "jest": {
+    "verbose": true,
+    "modulePathIgnorePatterns": ["dist"]
   }
 }

@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import { promises as fs, createWriteStream } from 'fs'
 import { createHash } from 'crypto'
 import { Transform, Writable, Readable, PassThrough } from 'stream'
+import { unescape } from 'querystring'
 import {
   IRetsClientOptions,
   RetsMetadataType,
@@ -92,10 +93,11 @@ const testStreamSearch = async () => {
         // query: '(Status=A)',
         query: '(timestamp_sql=2021-07-15T00:00:00+)',
         // query: '(ml_num=E5230190)',
-        // limit: 3,
+        limit: 3,
         searchType: TREBResources.Property,
         className: TREBClass.ResidentialProperty,
         returnType: ReturnType.Stream,
+        processText: (text: string) => unescape(text),
       })) as Readable
     )
       // .pipe(
@@ -122,18 +124,18 @@ const testStreamSearch = async () => {
           },
         }),
       )
-    // saveToFile.pipe(
-    //   new Writable({
-    //     objectMode: true,
-    //     write: (data, _, done) => {
-    //       const saveData = async (save: Buffer) => {
-    //         await fs.appendFile('test.json', JSON.stringify(save))
-    //         done()
-    //       }
-    //       saveData(data)
-    //     },
-    //   }),
-    // )
+    saveToFile.pipe(
+      new Writable({
+        objectMode: true,
+        write: (data, _, done) => {
+          const saveData = async (save: Buffer) => {
+            await fs.appendFile('test.json', JSON.stringify(save))
+            done()
+          }
+          saveData(data)
+        },
+      }),
+    )
 
     // wait for the stream to finish
     await new Promise((fulfill) => searchStream.on('close', fulfill))
@@ -210,8 +212,8 @@ const main = async () => {
   // await testMetadata()
   // await testDataMap()
   // await testSearch()
-  await testObjects()
-  // await testStreamSearch()
+  // await testObjects()
+  await testStreamSearch()
 
   console.log('Finish!')
 }
